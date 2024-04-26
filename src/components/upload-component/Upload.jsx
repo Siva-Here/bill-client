@@ -176,7 +176,7 @@ function Upload() {
   const [billCategory, setBillCategory] = useState('');
   const [billAmount, setBillAmount] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [uploadMode, setUploadMode] = useState('file'); 
+  const [uploadMode, setUploadMode] = useState('file');
   const webcamRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [rearCameraAvailable, setRearCameraAvailable] = useState(true);
@@ -254,7 +254,7 @@ function Upload() {
   const uploadFormData = async (formData) => {
     try {
       console.log(formData);
-      const token = localStorage.getItem('jwtToken'); 
+      const token = localStorage.getItem('jwtToken');
       const response = await axios.post('https://bill-server-hiq9.onrender.com/user/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -262,7 +262,7 @@ function Upload() {
         }
       });
       console.log(response.data);
-      
+
       setBillName('');
       setBillCategory('');
       setBillAmount('');
@@ -322,11 +322,10 @@ function Upload() {
                   className='webcam'
                 />
                 <button className='buttn capture-button' type="button" onClick={capture}>Capture</button>
-                {!rearCameraAvailable ? (
-                  <button className='buttn' onClick={switchToRearCamera}>Switch to Rear Camera</button>
-                ) : (
+                <div>
                   <button className='buttn' onClick={switchToFrontCamera}>Switch to Front Camera</button>
-                )}
+                  <button className='buttn' onClick={switchToRearCamera}>Switch to Rear Camera</button>
+                </div>
               </div>
             )}
           </div>

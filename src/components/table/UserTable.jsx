@@ -6,7 +6,7 @@ import { PieChart } from 'react-minimal-pie-chart';
 import {Pie} from 'react-chartjs-2';
 const dataSets = [
   {data:[100,200,400],
-  backgroundColor: ['red','green','blue']}
+  backgroundColor: ['red','rgb(96, 237, 74)','blue']}
 ];
 
 function UserTable() {
@@ -101,17 +101,21 @@ function UserTable() {
       />; */}
         {/* <ReactPieChart dataSets={dataSets}/> */}
         {/* <Pie data={{datasets: dataSets}} height='50%'/> */}
+        <div className='flex-1 ms-auto me-auto upload-outer-div col-10 col-sm-10 mt-5 justify-content-center align-items-center'>
+          <p className="fs-4 fw-bold">Total Bills: {pending+accepted+rejected}</p>
+          <p className="fs-4 fw-bold" style={{}}>Total Amount: &#8377; {acceptedBill+pendingBill+rejectedBill}</p>
+        </div>
         <div className='upload-outer-div col-10 col-md-4'>
-          <p className="fs-4 fw-bold text-secondary">Pending Bills: {pending}</p>
-          <p className="fs-4 fw-bold text-success">Accepted Bills: {accepted}</p>
-          <p className="fs-4 fw-bold text-danger">Rejected Bills: {rejected}</p>
+          <p className="fs-4 fw-bold" style={{color: "rgb(237, 221, 74)"}}>Pending Bills: {pending}</p>
+          <p className="fs-4 fw-bold" style={{color: "rgb(96, 237, 74)"}}>Accepted Bills: {accepted}</p>
+          <p className="fs-4 fw-bold" style={{color: "red"}}>Rejected Bills: {rejected}</p>
         </div>
         <div className='upload-outer-div col-md-4 col-10'>
-        <div className='flex-1 ms-atuo'>
-          <p className="fs-4 fw-bold text-secondary">Pending Amount: {pendingBill}</p>
-          <p className="fs-4 fw-bold text-success">Accepted Amount: {acceptedBill}</p>
-          <p className="fs-4 fw-bold text-danger">Rejected Amount: {rejectedBill}</p>
-        </div>
+          <div className='flex-1 ms-atuo'>
+            <p className="fs-4 fw-bold" style={{color: "rgb(237, 221, 74)"}}>Pending Amount: &#8377; {pendingBill}</p>
+            <p className="fs-4 fw-bold"style={{color: "rgb(96, 237, 74)"}}>Accepted Amount: &#8377; {acceptedBill}</p>
+            <p className="fs-4 fw-bold" style={{color: "red"}}>Rejected Amount: &#8377; {rejectedBill}</p>
+          </div>
         </div>
       </div>
       <table className='table-striped table-hover w-75 container mb-5'>
@@ -126,9 +130,9 @@ function UserTable() {
         <tbody>
           {data.map((data1, index) => {
             if(data1.status=='pending'){
-              statusColor = 'yellow';
+              statusColor = 'rgb(237, 221, 74)';
             }else if(data1.status=='accepted'){
-              statusColor = 'green';
+              statusColor = 'rgb(96, 237, 74)';
             }else if(data1.status=='rejected'){
               statusColor = 'rgb(255,0,0)';
             }

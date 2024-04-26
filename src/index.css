@@ -6,7 +6,9 @@
   font-weight: 100;
   font-style: normal;
 }
-
+.sample{
+  color: rgb(237, 221, 74);
+}
 .roboto-thin-italic {
   font-family: "Roboto", sans-serif;
   font-weight: 100;

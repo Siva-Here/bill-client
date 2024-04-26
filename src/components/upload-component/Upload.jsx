@@ -275,11 +275,14 @@ function Upload() {
     }
   };
 
-  const switchMode = () => {
-    if (uploadMode === 'file') {
-      setCapturedImage(null);
-    }
-    setUploadMode(uploadMode === 'file' ? 'webcam' : 'file');
+  const switchToFrontCamera = () => {
+    setUploadMode('webcam');
+    setRearCameraAvailable(false);
+  };
+
+  const switchToRearCamera = () => {
+    setUploadMode('webcam');
+    setRearCameraAvailable(true);
   };
 
   return (
@@ -319,10 +322,13 @@ function Upload() {
                   className='webcam'
                 />
                 <button className='buttn capture-button' type="button" onClick={capture}>Capture</button>
-                {!rearCameraAvailable && <p>Rear camera not available. Switch to front camera or upload a file.</p>}
+                {!rearCameraAvailable ? (
+                  <button className='buttn' onClick={switchToRearCamera}>Switch to Rear Camera</button>
+                ) : (
+                  <button className='buttn' onClick={switchToFrontCamera}>Switch to Front Camera</button>
+                )}
               </div>
             )}
-            <button className='buttn' type="button" onClick={switchMode}>Switch to {uploadMode === 'file' ? 'Webcam' : 'File'}</button>
           </div>
           {capturedImage && <img src={capturedImage} alt="Captured" />}
           <button className='buttn' type="submit">Submit</button>

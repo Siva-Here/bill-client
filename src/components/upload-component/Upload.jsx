@@ -320,6 +320,7 @@ function Upload() {
                   ref={webcamRef}
                   screenshotFormat="image/jpeg"
                   className='webcam'
+                  videoConstraints={rearCameraAvailable ? { facingMode: 'environment' } : { facingMode: 'user' }}
                 />
                 <button className='buttn capture-button' type="button" onClick={capture}>Capture</button>
                 <div>

@@ -167,7 +167,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import Webcam from 'react-webcam';
 import './upload.css';
 
 function Upload() {
@@ -177,9 +176,9 @@ function Upload() {
   const [billAmount, setBillAmount] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [uploadMode, setUploadMode] = useState('file');
-  const webcamRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [rearCameraAvailable, setRearCameraAvailable] = useState(true);
+  const videoRef = useRef(null);
 
   const billCategories = ['hospitality', 'infra', 'food'];
 
@@ -208,7 +207,12 @@ function Upload() {
   };
 
   const capture = () => {
-    const imageSrc = webcamRef.current.getScreenshot();
+    const canvas = document.createElement('canvas');
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    const context = canvas.getContext('2d');
+    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    const imageSrc = canvas.toDataURL('image/jpeg');
     setCapturedImage(imageSrc);
   };
 
@@ -275,14 +279,34 @@ function Upload() {
     }
   };
 
-  const switchToFrontCamera = () => {
-    setUploadMode('webcam');
-    setRearCameraAvailable(false);
+  const switchToRearCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      setUploadMode('webcam');
+      setRearCameraAvailable(true);
+    } catch (error) {
+      console.error('Error accessing rear camera:', error);
+      setErrorMessage('Failed to access rear camera. Please try again.');
+      setRearCameraAvailable(false);
+    }
   };
 
-  const switchToRearCamera = () => {
-    setUploadMode('webcam');
-    setRearCameraAvailable(true);
+  const switchToFrontCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      setUploadMode('webcam');
+      setRearCameraAvailable(false);
+    } catch (error) {
+      console.error('Error accessing front camera:', error);
+      setErrorMessage('Failed to access front camera. Please try again.');
+      setRearCameraAvailable(false);
+    }
   };
 
   return (
@@ -315,17 +339,11 @@ function Upload() {
             )}
             {uploadMode === 'webcam' && (
               <div className="webcam-container">
-                <Webcam
-                  audio={false}
-                  ref={webcamRef}
-                  screenshotFormat="image/jpeg"
-                  className='webcam'
-                  videoConstraints={rearCameraAvailable ? { facingMode: 'environment' } : { facingMode: 'user' }}
-                />
+                <video ref={videoRef} autoPlay muted className="webcam"></video>
                 <button className='buttn capture-button' type="button" onClick={capture}>Capture</button>
                 <div>
+                  {rearCameraAvailable && <button className='buttn' onClick={switchToRearCamera}>Switch to Rear Camera</button>}
                   <button className='buttn' onClick={switchToFrontCamera}>Switch to Front Camera</button>
-                  <button className='buttn' onClick={switchToRearCamera}>Switch to Rear Camera</button>
                 </div>
               </div>
             )}
@@ -335,7 +353,6 @@ function Upload() {
         </form>
       </div>
     </div>
-
   );
 }
 

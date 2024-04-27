@@ -185,7 +185,6 @@
 
 // export default Upload;
 
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./upload.css";
@@ -203,6 +202,7 @@ function Upload() {
   const [imgPerc, setImgPerc] = useState(0);
   const [imgLink, setImgLink] = useState(null); 
   const [isSubmitting, setIsSubmitting] = useState(false); 
+  const [showSpinner, setShowSpinner] = useState(false); // State variable for showing spinner
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -267,6 +267,7 @@ function Upload() {
     }
 
     try {
+      setShowSpinner(true); // Show spinner when submitting
       setIsSubmitting(true); 
       let formData = new FormData();
       formData.append("file", billFile);
@@ -303,6 +304,7 @@ function Upload() {
       );
       setErrorMessage("Failed to upload file. Please try again later.");
     } finally {
+      setShowSpinner(false); // Hide spinner after submission
       setIsSubmitting(false);
     }
   };
@@ -362,7 +364,13 @@ function Upload() {
             />
           </div>
           <button className="buttn px-3" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Submit"}
+            {showSpinner ? ( // Show spinner when submitting
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            ) : (
+              isSubmitting ? "Submitting..." : "Submit"
+            )}
           </button>
         </form>
       </div>

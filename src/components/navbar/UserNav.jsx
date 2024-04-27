@@ -1,15 +1,20 @@
 import React, {useState} from 'react'
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const UserNav = () => {
+    const navigate = useNavigate();
     const [text,setText] = useState([]);
     // function handleTextChange(e) {
     //     setText(e.target.value);
     // }
     function handleLogOut(){
-        localStorage.removeItem('jwtToken');
-        window.location.href = '/login';
-        window.alert('Log Out Successful');
+        const logout = window.confirm('Confirm Log Out');
+        console.log(logout);
+        if(logout){
+            localStorage.removeItem('jwtToken');
+            localStorage.removeItem('username');
+            navigate('/login');
+        }
     }
     return (
         <div className='mb-5 navbar-light text-dark'>
@@ -25,7 +30,9 @@ const UserNav = () => {
                                 <NavLink className='text-decoration-none' to='/contact'><a class="nav-link active" aria-current="page">Web Team &nbsp;</a></NavLink>
                             </li>
                             <li class="nav-item">
-                                <NavLink to='/login' className='text-decoration-none'><a onClick={handleLogOut} class="nav-link active">LogOut</a></NavLink>
+                                {/* <NavLink to='/login' className='text-decoration-none'> */}
+                                <a onClick={handleLogOut} class="nav-link active">LogOut</a>
+                                {/* </NavLink> */}
                             </li>
                         </ul>
                     </div>

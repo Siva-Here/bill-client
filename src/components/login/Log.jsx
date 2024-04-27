@@ -4,15 +4,19 @@ import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill, RiAccountCircleFill } from "react-icons/ri";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { FaRegEye } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css';
 import './log.css';
 
 const Log = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // State variable to track loading state
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false); // State variable to track password visibility
+  const navigate = useNavigate(); // useNavigate hook for navigation
 
   const sanitizeInput = (input) => {
     let sanitizedInput = input.trim();
@@ -36,22 +40,12 @@ const Log = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true); // Set loading state to true when submitting form
 
     const sanitizedFormData = {
       username: sanitizeInput(formData.username),
       password: sanitizeInput(formData.password),
     };
-
-
-    const isSafeInput = Object.values(formData).every(
-      (value) => typeof value === "string"
-    );
-
-    if (!isSafeInput) {
-      console.error("Input validation failed: Non-string values detected.");
-      window.alert("Input validation failed: Non-string values detected.");
-      return;
-    }
 
     fetch("https://bill-server-hiq9.onrender.com/user/login", {
       method: "POST",
@@ -62,42 +56,31 @@ const Log = () => {
     })
     .then((response) => {
       if (!response.ok) {
-        alert("Invalid Username or Password");
+        throw new Error("Invalid Username or Password");
       }
-      console.log(response); // Log the JWT cookie
       return response.json();
     })
-      .then((data) => {
-        console.log(data);
-        if (data === "Invalid username And Password") {
-          window.alert("Invalid username And Password");
-          console.log("Invalid username And Password");
-          return;
-        } else {
-          if (data.username) {
-            // Assuming the username is returned in the response
-            window.alert("Login successful! Welcome, " + data.username);
-            setIsLogin(true);
-            window.location.href = '/user';
-            localStorage.setItem('jwtToken',data.token);
-            localStorage.setItem('username',data.username);
-            // console.log(localStorage.getItem('jwtToken'));
-          } else {
-            console.error("Invalid username And Password");
-          }
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    .then((data) => {
+      toast.success(`Login Successful! Welcome, ${data.username}`); // Display success message using Toastify
+      setIsLogin(true);
+      localStorage.setItem('jwtToken', data.token);
+      localStorage.setItem('username', data.username);
+      setTimeout(()=>{
+        navigate('/user'); // Navigate to '/user' page on successful login
+      }, 2000);
+    })
+    .catch((error) => {
+      toast.error(error.message); // Display error message using Toastify
+    })
+    .finally(() => {
+      setIsLoading(false); // Set loading state to false when submission is complete
+    });
   };
 
   return (
     <>
       <h1 className="display-4 text-white text-center fw-bold fst-italic">Bill Management System</h1>
-      {isLogin ? (
-        window.location.href = '/user'
-      ) : null}
+      <ToastContainer /> {/* ToastContainer for displaying Toastify messages */}
 
       {!isLogin && (
         <div className=" justify-content-center d-flex flex-column p-5 rounded-2 siva">
@@ -160,9 +143,15 @@ const Log = () => {
               </div>
             </div>
             <div className="justify-content-between d-flex">
-              <button type="submit" className="btn btn-outline-primary ms-auto me-auto mt-5">
-                Submit
-              </button>
+              {isLoading ? ( // Display spinner if loading state is true
+                <div className="spinner-border text-primary text-center" role="status">
+                  <span className="visually-hidden ms-auto me-auto my-5">Loading...</span>
+                </div>
+              ) : ( // Display submit button if loading state is false
+                <button type="submit" className="btn btn-outline-primary ms-auto me-auto mt-5">
+                  Submit
+                </button>
+              )}
             </div>
           </form>
         </div>

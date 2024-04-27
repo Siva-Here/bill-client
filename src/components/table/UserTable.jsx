@@ -80,9 +80,9 @@ function UserTable() {
         <h1 className='text-white ms-auto text-center flex-1'>Your Bills</h1>
         <br /><hr />
         <div className="d-flex container-sm">
-        <div class="w-50 ms-auto me-auto mb-4" role='search'>
+        <div class=" ms-auto col-10 col-sm-10 col-md-3 me-auto mb-4" role="search">
               <input onChange={(e)=>{handleTextChange(e)}} className="p-2 fw-bold form-control me-2" type="search" placeholder="Search Bills" aria-label="Search" />
-          </div>          
+          </div>        
           <select className='w-25 ms-auto me-auto mb-4 form-select flex-2' onChange={(e) => { setStatus(e.target.value); }}>
             <option value="All Bills">All Bills</option>
             <option value="pending">pending</option>

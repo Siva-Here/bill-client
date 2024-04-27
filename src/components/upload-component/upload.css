@@ -47,6 +47,8 @@ label, input{
     font-weight: bold;
     border-radius: 5px;
     margin: 20px;
+    margin-left: 35%;
+    margin-top: 15%;
     /* position: absolute; */
     
 }

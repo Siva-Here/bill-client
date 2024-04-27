@@ -22,7 +22,7 @@ const UserNav = () => {
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto me-5 mb-2 mb-lg-0 text-end">
                             <li class="nav-item">
-                                <NavLink className='text-decoration-none' to='/contact'><a class="nav-link active" aria-current="page">Contact</a></NavLink>
+                                <NavLink className='text-decoration-none' to='/contact'><a class="nav-link active" aria-current="page">Web Team &nbsp;</a></NavLink>
                             </li>
                             <li class="nav-item">
                                 <NavLink to='/login' className='text-decoration-none'><a onClick={handleLogOut} class="nav-link active">LogOut</a></NavLink>

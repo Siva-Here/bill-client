@@ -14,7 +14,7 @@ function App() {
           <Route path="/login" element={<MainLog />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/user" element={<UserPage />} />
-          <Route path="*" element={<h1>Page NOt Found</h1>} />
+          <Route path="*" element={<h1 className='text-white'>Page NOt Found</h1>} />
         
       </Routes>
     </BrowserRouter>

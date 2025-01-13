@@ -431,6 +431,8 @@ function UserTable() {
   let acceptedBill = 0;
   let rejectedBill = 0;
 
+  //dummy text for checking github
+
   const openModal = (image) => {
     setSelectedImage(image);
     setOpenPreview(true);

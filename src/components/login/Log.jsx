@@ -79,21 +79,21 @@ const Log = () => {
 
   return (
     <>
-      <h1 className="display-4 text-white text-center fw-bold fst-italic">Bill Management System</h1>
+      <h1 className="mb-4 display-5 text-white text-center fw-bold fst-italic">Bill Management System</h1>
       <ToastContainer /> {/* ToastContainer for displaying Toastify messages */}
 
       {!isLogin && (
-        <div className=" justify-content-center d-flex flex-column p-5 rounded-2 siva">
+        <div className="flex flex-column mx-auto px-4 py-3 rounded-2 siva">
           <h1 className="text-center signup">
             <RiAccountCircleFill className="icon" /> Sign In
           </h1>
           <br />
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <MdEmail className="me-2 username" />
+          <form onSubmit={handleSubmit} className="p-1">
+            <div className="mb-2">
+              <MdEmail className=" username" />
               <label
                 htmlFor="exampleInputEmail1"
-                className="p-3 pt-3 pb-3 form-label username"
+                className=" pt-1 form-label username"
               >
                 User Name
               </label>
@@ -111,11 +111,11 @@ const Log = () => {
                 We'll never share your username with anyone else.
               </div>
             </div>
-            <div className="mb-3">
-              <RiLockPasswordFill className="me-2 text-white" />
+            <div className="mt-4">
+              <RiLockPasswordFill className="text-white" />
               <label
                 htmlFor="exampleInputPassword1"
-                className="p-3 pb-3 pt-3 text-white form-label"
+                className=" text-white form-label"
               >
                 Password
               </label>
@@ -144,7 +144,7 @@ const Log = () => {
             </div>
             <div className="justify-content-between d-flex">
               {isLoading ? ( // Display spinner if loading state is true
-                <div className="spinner-border text-primary text-center" role="status">
+                <div className="spinner-border text-primary text-center ms-auto me-auto mt-5" role="status">
                   <span className="visually-hidden ms-auto me-auto my-5">Loading...</span>
                 </div>
               ) : ( // Display submit button if loading state is false
@@ -156,6 +156,7 @@ const Log = () => {
           </form>
         </div>
       )}
+      
     </>
   );
 };

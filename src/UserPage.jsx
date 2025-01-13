@@ -18,7 +18,7 @@ function UserPage() {
   return (
     <>
       <UserNav />
-      <br />
+      {/* <br /> */}
       <Upload />
       <UserTable />
     </>

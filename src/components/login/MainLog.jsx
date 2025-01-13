@@ -3,9 +3,9 @@ import Log from './Log'
 
 const MainLog = () => {
     return (
-        <div className='container-lg'>
-            <div className="row justify-content-center align-content-center align-items-center ">
-                <div className="col-lg-6 col-md-6 col-sm-12 mt-5 pt-5">
+        <div className='container'>
+            <div className='justify-content-center align-items-center'>
+                <div className="col-lg-5 col-md-6 col-sm-12 mt-3 pt-4 mx-auto">
                     <Log/>
                 </div>
             </div>

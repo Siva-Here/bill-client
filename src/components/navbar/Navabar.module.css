@@ -1,0 +1,35 @@
+.customBtn {
+    background-color: #dc3545; /* Bootstrap's danger color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 1px 5px;
+    height: auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.customBtn:hover {
+    background-color: #c82333; /* Darker shade on hover */
+    transform: scale(1.05);
+}
+
+.customBtn a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.customBtn a:hover {
+    color: #f8f9fa; /* Slightly lighter shade of white */
+}
+
+.responsiveText {
+    font-size: 0.875rem; /* fs-6 equivalent */
+}
+
+@media (min-width: 768px) {
+    .responsiveText {
+        font-size: 1.75rem; /* fs-3 equivalent */
+    }
+}

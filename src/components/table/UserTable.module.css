@@ -99,3 +99,24 @@
         font-size: 12px; /* Fixed size for very small screens */
     }
 }
+
+/* Default for smaller screens */
+.cardTitle {
+  font-size: 14px;
+  transition: font-size 0.2s ease-in-out;
+}
+
+.cardValue {
+  font-size: 13px;
+  transition: font-size 0.2s ease-in-out;
+}
+
+/* For medium screens and above */
+@media (min-width: 768px) {
+  .cardTitle{
+    font-size: 18px;
+  }
+  .cardValue {
+    font-size: 16px;
+  }
+}

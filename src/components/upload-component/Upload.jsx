@@ -452,7 +452,7 @@ function Upload() {
     <div className="container px-md-5">
 
 
-<div className="row " style={{ marginBottom:'40px'}}>
+<div className="row" style={{ marginBottom:'40px',marginTop:""}}>
   <div className="col-6 d-flex flex-column justify-content-center align-items-center" style={{position:'relative'}}>
   <h4 className="text-nowrap" style={{color:'white'}}>With Gst</h4>
     <img src="GSTImagedup.jpg" className={`img-fluid ${styles.imgCustom}`} alt="charan" onClick={() => handlePreview('GSTImagedup4.jpg')}/>
@@ -484,7 +484,7 @@ function Upload() {
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
                 <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Name:</label>
                 <input
-                  className="ms-2 col-11 col-sm-6 col-md-7"
+                  className="ms-2 col-11 col-sm-6 col-md-7 col-lg-6"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}

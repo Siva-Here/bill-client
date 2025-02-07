@@ -530,6 +530,7 @@ function UserTable() {
   const [text, setText] = useState('');
   const [status, setStatus] = useState('All Bills');
   const [data, setData] = useState([]);
+  const [data1,setData1] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [sorted, setSorted] = useState(false);
   const [openPreview, setOpenPreview] = useState(false);
@@ -551,6 +552,7 @@ function UserTable() {
           }
         );
         setData(response.data.userBills.reverse());
+        setData1(response.data.userBills.reverse());
       } catch (error) {
         console.error('Error:', error);
       }
@@ -558,6 +560,37 @@ function UserTable() {
 
     fetchData();
   }, []);
+
+  console.log("data is:",data1)
+
+  useEffect(() => {
+    if (!text && !status) {
+      setData([...data1].reverse()); // If all filters are empty, show full reversed list
+      return;
+    }
+
+    let filteredData = data1;
+
+    // Apply filters dynamically
+    if (text !== "") {
+      console.log("text is changed")
+      filteredData = filteredData.filter(
+        (item) =>
+          item.name.toLowerCase().includes(text.toLowerCase()) ||
+          item.uploadedBy.toLowerCase().includes(text.toLowerCase())
+      );
+      console.log("filterdata from text:",filteredData)
+    }
+
+  
+    if (status !== "All Bills") {
+      console.log("status is changed")
+      filteredData = filteredData.filter((item) => item.status === status);
+      console.log("filterdata from status:",filteredData)
+    }
+
+    setData([...filteredData].reverse()); // Reverse the final filtered list
+}, [text, status]);
 
   const handlePreview = (image) => {
     setSelectedImage(image);
@@ -705,9 +738,9 @@ function UserTable() {
                   : 'rgb(255,0,0)';
 
               return (
-                (data1.status === status || status === 'All Bills') &&
-                (data1.name.toLowerCase().includes(text.toLowerCase()) ||
-                  data1?.billType?.toLowerCase().includes(text.toLowerCase())) && (
+                // (data1.status === status || status === 'All Bills') &&
+                // (data1.name.toLowerCase().includes(text.toLowerCase()) ||
+                //   data1?.billType?.toLowerCase().includes(text.toLowerCase())) && 
                   <tr key={index}>
                     <td className={styles.tableDataCell}>{indexOfFirstItem + index + 1}</td>
                     <td className={styles.tableDataCell}>{data1.name}</td>
@@ -743,7 +776,7 @@ function UserTable() {
                       </div>
                     </td>
                   </tr>
-                )
+                
               );
             })}
           </tbody>
@@ -766,7 +799,7 @@ function UserTable() {
        <button
           className="btn btn-primary"
           onClick={nextPage}
-          disabled={indexOfLastItem >= data.length}
+          disabled={data.length <= 15 || currentItems.length < 15}
         >
            Next <span  style={{fontSize:'15px',fontWeight:'bolder'}}><GrLinkNext/></span>
         </button>

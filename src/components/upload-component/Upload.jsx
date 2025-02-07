@@ -279,6 +279,7 @@ function Upload() {
   const [showSpinner, setShowSpinner] = useState(false);
   const [billType, setBillType] = useState("");
   const [isUploading, setIsUploading] = useState(false); // New state to track upload status
+  const [errors, setErrors] = useState({});
 
   const now = new Date();
   const year = now.getFullYear();
@@ -295,6 +296,18 @@ function Upload() {
   const [openPreview, setOpenPreview] = useState(false);
   const [openModel, setOpenModel] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 576);
+
+  useEffect(() => {
+      const handleResize = () => {
+          setIsMobile(window.innerWidth < 576);
+      };
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const openModal = (image) => {
     setSelectedImage(image);
@@ -373,26 +386,43 @@ function Upload() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let newErrors = {};
+
+    if (!name) newErrors.name = "Please enter Name";
+    if (!billType) newErrors.billType = "Please select Bill Type";
+    if (billType === "GST" && !GstNumber) newErrors.GstNumber = "Please enter GST Number";
+    if (!billNumber) newErrors.billNumber = "Please enter Bill Number";
+    if (!billCategory) newErrors.billCategory = "Please select Bill Category";
+    if (!firmName) newErrors.firmName = "Please enter Firm Name";
+    if (!date) newErrors.date = "Please enter Date of Purchase";
+    if (!billAmount) newErrors.billAmount = "Please enter Bill Amount";
+    if (!imgLink) newErrors.imgLink = "Please upload a bill image";
+  
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     const amountRegex = /^\d+(\.\d{1,2})?$/;
     if (!amountRegex.test(billAmount)) {
       setErrorMessage("Please enter a valid amount (numbers only)");
       return;
     }
 
-    if (!name || !billNumber || !billCategory || !billAmount || !billType || (billType == 'GST' ? !GstNumber : false) || !firmName || !date) {
-      setErrorMessage("All fields are required");
-      return;
-    }
+    // if (!name || !billNumber || !billCategory || !billAmount || !billType || (billType == 'GST' ? !GstNumber : false) || !firmName || !date) {
+    //   setErrorMessage("All fields are required");
+    //   return;
+    // }
 
-    if (!category.includes(billCategory)) {
-      setErrorMessage("Invalid bill category");
-      return;
-    }
+    // if (!category.includes(billCategory)) {
+    //   setErrorMessage("Invalid bill category");
+    //   return;
+    // }
 
-    if (!imgLink) {
-      setErrorMessage("Please upload a bill image");
-      return;
-    }
+    // if (!imgLink) {
+    //   setErrorMessage("Please upload a bill image");
+    //   return;
+    // }
 
     try {
       setShowSpinner(true);
@@ -452,8 +482,8 @@ function Upload() {
     <div className="container px-md-5">
 
 
-<div className="row" style={{ marginBottom:'40px',marginTop:""}}>
-  <div className="col-6 d-flex flex-column justify-content-center align-items-center" style={{position:'relative'}}>
+<div className="row d-flex justify-content-center align-items-center" style={{ marginBottom:'40px'}}>
+  <div className="col-6  col-lg-3 d-flex flex-column justify-content-center align-items-center" style={{position:'relative'}}>
   <h4 className="text-nowrap" style={{color:'white'}}>With Gst</h4>
     <img src="GSTImagedup.jpg" className={`img-fluid ${styles.imgCustom}`} alt="charan" onClick={() => handlePreview('GSTImagedup4.jpg')}/>
     <button className={`${styles1.buttonOverlay} text-nowrap`} style={{width:'auto'}} onClick={() => handlePreview('GSTImagedup4.jpg')}>Click For Preview</button>
@@ -461,7 +491,7 @@ function Upload() {
 
   {/* onClick={() => handlePreview(data1.image)} */}
 
-  <div className="col-6 d-flex flex-column justify-content-center align-items-center" style={{position:'relative'}}>
+  <div className="col-6 col-lg-3 d-flex flex-column justify-content-center align-items-center" style={{position:'relative'}}>
   <h4 className="text-nowrap" style={{color:'white'}}>Without Gst</h4>
     <img src="Notgst.jpg" className={`img-fluid ${styles.imgCustom}`} alt="siva" onClick={() => handlePreview('Notgst1.jpg')} />
      <button className={`${styles1.buttonOverlay} text-nowrap`} style={{width:'auto'}} onClick={() => handlePreview('Notgst1.jpg')}>Click For Preview</button>
@@ -471,11 +501,11 @@ function Upload() {
 {openPreview && <PreviewImage image={selectedImage} onClose={closeModal} />}
 
 
-        <div className={`${styles.uploadOuterDiv} container-sm accordion`}>
+        <div className={`conta ${styles.uploadOuterDiv}  ${isMobile ? "container-sm" : ""} accordion ms-auto me-auto`}>
           <h1 id="upload-heading" className="mt-2 mb-4 fw-bold">
             Upload Bill
           </h1>
-          {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+          {/* {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>} */}
 
           
 
@@ -484,11 +514,13 @@ function Upload() {
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
                 <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Name:</label>
                 <input
-                  className="ms-2 col-11 col-sm-6 col-md-7 col-lg-6"
+                  className="ms-2 col-11 col-sm-6 col-md-7"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  
                 />
+                 {errors.name && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.name}</p>}
               </div>
 
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
@@ -505,6 +537,7 @@ function Upload() {
                     </option>
                   ))}
                 </select>
+                {errors.billType && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.billType}</p>}
               </div>
 
               {billType === "GST" && (
@@ -516,6 +549,7 @@ function Upload() {
                     value={GstNumber}
                     onChange={(e) => setGstNumber(e.target.value)}
                   />
+                  {errors.GstNumber && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.GstNumber}</p>}
                 </div>
               )
               }
@@ -528,6 +562,7 @@ function Upload() {
                     value={billNumber}
                     onChange={(e) => setBillNumber(e.target.value)}
                   />
+                  {errors.billNumber && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.billNumber}</p>}
                 </div>
 
 
@@ -545,6 +580,7 @@ function Upload() {
                     </option>
                   ))}
                 </select>
+                {errors.billCategory && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.billCategory}</p>}
               </div>
 
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
@@ -555,6 +591,7 @@ function Upload() {
                   value={firmName}
                   onChange={(e) => setFirmName(e.target.value)}
                 />
+                 {errors.firmName && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.firmName}</p>}
               </div>
 
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
@@ -565,6 +602,7 @@ function Upload() {
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                 />
+                {errors.date && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.date}</p>}
               </div>
 
               <div className="row mb-2 fs-4 d-flex justify-content-center align-items-center">
@@ -575,6 +613,7 @@ function Upload() {
                   value={billAmount}
                   onChange={(e) => setBillAmount(e.target.value)}
                 />
+                {errors.billAmount && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.billAmount}</p>}
               </div>
 
              
@@ -598,6 +637,7 @@ function Upload() {
                     className="d-none ms-2 col-11 col-sm-6 col-md-7 "
                     accept="image/jpeg,image/jpg,image/png"
                   />
+                  
 
                   <div className="upload-icon mb-3">
                     <IoMdCloudUpload />
@@ -621,11 +661,13 @@ function Upload() {
                   </div>
                 </div>
 
+      {errors.imgLink && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.imgLink}</p>}
+
                 <div className="mt-1 d-flex justify-content-between align-items-center col-11 col-sm-6 col-md-7">
                  
 
                   
-                    <button className="btn btn-secondary" onClick={handleFileCancel}>
+                    <button type="button" className="btn btn-secondary" onClick={handleFileCancel}>
                       Reset image
                     </button>
                     <button

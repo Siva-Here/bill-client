@@ -111,6 +111,7 @@ const Log = () => {
                 We'll never share your username with anyone else.
               </div>
             </div>
+            
             <div className="mt-4">
               <RiLockPasswordFill className="text-white" />
               <label

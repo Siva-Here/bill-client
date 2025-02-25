@@ -106,7 +106,7 @@ import PreviewImage from "../PreviewImage";
 //       const token = localStorage.getItem("jwtToken");
 //       const response = await axios.post(
 //         // "https://bill-server-hiq9.onrender.com/user/upload",
-//           "http://localhost:8000/user/upload",
+//           "https://bill-server-hiq9.onrender.com/user/upload",
 //         formData,
 //         {
 //           headers: {
@@ -443,7 +443,7 @@ function Upload() {
 
       const token = localStorage.getItem("jwtToken");
       const response = await axios.post(
-        "http://localhost:8000/user/upload",
+        "https://bill-server-hiq9.onrender.com/user/upload",
         formData,
         {
           headers: {
@@ -635,7 +635,7 @@ function Upload() {
                     ref={fileInputRef}
                     onChange={handleFileSelect}
                     className="d-none ms-2 col-11 col-sm-6 col-md-7 "
-                    accept="image/jpeg,image/jpg,image/png"
+                    accept="image/*"
                   />
                   
 

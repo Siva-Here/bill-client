@@ -47,7 +47,7 @@ const Log = () => {
       password: sanitizeInput(formData.password),
     };
 
-    fetch("http://localhost:8000/user/login", {
+    fetch("https://bill-server-hiq9.onrender.com/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

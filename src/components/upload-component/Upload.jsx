@@ -14,255 +14,6 @@ import { IoMdCloudUpload } from "react-icons/io";
 import styles1 from '../table/UserTable.module.css'
 import PreviewImage from "../PreviewImage";
 
-
-// function Upload() {
-
-//   const [billFile, setBillFile] = useState(null);
-//     const [name, setName] = useState(""); 
-//     const [billCategory, setBillCategory] = useState("");
-//     const [billAmount, setBillAmount] = useState("");
-//     const [billNumber, setBillNumber] = useState(""); // New state for billNumber
-//     const [firmName, setFirmName] = useState(""); // New state for firmName
-//     const [date, setDate] = useState(""); // New state for date
-//     const [errorMessage, setErrorMessage] = useState("");
-//     const [imgPerc, setImgPerc] = useState(0);
-//     const [imgLink, setImgLink] = useState(null);
-//     const [isSubmitting, setIsSubmitting] = useState(false);
-//     const [showSpinner, setShowSpinner] = useState(false);
-//     const [billType, setBillType] = useState("");
-
-//   const now = new Date();
-//   const year = now.getFullYear();
-//   const month = String(now.getMonth() + 1).padStart(2, "0");
-//   const dateToday = String(now.getDate()).padStart(2, "0");
-//   const hours = String(now.getHours()).padStart(2, "0");
-//   const minutes = String(now.getMinutes()).padStart(2, "0");
-//   const seconds = String(now.getSeconds()).padStart(2, "0");
-
-//   const uploadFile = async(file) => {
-//     const fileName = `${year}-${month}-${date}-${hours}-${minutes}-${seconds}`;
-//     const data = await UploadImage(file,fileName)
-//     console.log("data is:",data);
-//     setImgLink(data.url)
-//   };
-
-//   useEffect(() => {
-//     billFile && uploadFile(billFile);
-
-//   }, [billFile]);
-
-//   const billTypes = ["GST", "Non GST"];
-//   const category = ["printing", "marketing", "travelling", "outside promotions", "stage photography"];
-
-//   const handleFileChange = (e) => {
-//     const file = e.target.files[0];
-//     setBillFile(file);
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     // Check if amount contains only numbers
-//     const amountRegex = /^\d+(\.\d{1,2})?$/; // Regular expression to match numbers with optional decimal up to two places
-//     if (!amountRegex.test(billAmount)) {
-//       setErrorMessage("Please enter a valid amount (numbers only)");
-//       return;
-//     }
-
-
-
-//     if (!name || !billCategory || !billAmount || !billType || !billNumber || !firmName || !date) {
-//       setErrorMessage("All fields are required");
-//       return;
-//     }
-
-//     if (!category.includes(billCategory)) {
-//       setErrorMessage("Invalid bill category");
-//       return;
-//     }
-
-//     if (!imgLink) {
-//       setErrorMessage("Please upload a bill image");
-//       return;
-//     }
-
-//     try {
-//       setShowSpinner(true); // Show spinner when submitting
-//       setIsSubmitting(true); 
-//       let formData = new FormData();
-
-//       formData.append("Name", name);
-//       formData.append("file", billFile);
-//       formData.append("category", billCategory);
-//       formData.append("amount", parseFloat(billAmount));
-//       formData.append("billType", billType);
-//       formData.append("billNumber", billNumber);
-//       formData.append("firmName", firmName);
-//       formData.append("date", date);
-//       formData.append("username", localStorage.getItem("username"));
-//       formData.append("imgLink", imgLink);
-
-
-//       const token = localStorage.getItem("jwtToken");
-//       const response = await axios.post(
-//         // "https://bill-server-hiq9.onrender.com/user/upload",
-//           "https://bill-server-hiq9.onrender.com/user/upload",
-//         formData,
-//         {
-//           headers: {
-//             "Content-Type": "multipart/form-data",
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
-
-//       setName("");
-//       setBillCategory("");
-//       setBillAmount("");
-//       setBillType("");
-//       setBillNumber("");
-//       setFirmName("");
-//       setDate("");
-//       setErrorMessage("");
-//       toast.success("Bill submitted successfully!");
-//       setTimeout(()=>{
-//         window.location.reload();
-//       },5000)
-//     } catch (error) {
-//       console.error(
-//         "Error uploading file:",
-//         error.response ? error.response.data.error : error.message
-//       );
-//       setErrorMessage("Failed to upload file. Please try again later.");
-//     } finally {
-//       setShowSpinner(false); // Hide spinner after submission
-//       setIsSubmitting(false);
-//     }
-//   };
-
-//   return (
-//     <div className="container">
-//       <div className="upload-outer-div container-sm accordion w-auto">
-//         <h1 id="upload-heading" className="mt-2 mb-5 fw-bold">
-//           Upload Bill
-//         </h1>
-//         {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
-//         <form className="fs-4" onSubmit={handleSubmit}>
-
-//         <div className="row mb-4 fs-4">
-//             <label className="m-2 col-11 col-sm-6 col-md-6">Name:</label>
-//             <input
-//               className="ms-3 col-11 col-sm-6 col-md-6"
-//               type="text"
-//               value={name}
-//               onChange={(e) => setName(e.target.value)}
-//             />
-//           </div>
-
-//         <div className="row mb-4 fs-4">
-//             <label className="m-2 col-11 col-sm-6 col-md-6">Bill Type:</label>
-//             <select
-//               className="ms-3 col-11 col-sm-6 col-md-6"
-//               value={billType}
-//               onChange={(e) => setBillType(e.target.value)}
-//             >
-//               <option value="">Select Bill Type</option>
-//               {billTypes.map((type) => (
-//                 <option key={type} value={type}>
-//                   {type}
-//                 </option>
-//               ))}
-//             </select>
-//           </div>
-
-
-//           <div className="row mb-4 fs-4">
-//             <label className="m-2 col-11 col-sm-6 col-md-6">Bill Number:</label>
-//             <input
-//               className="ms-3 col-11 col-sm-6 col-md-6"
-//               type="text"
-//               value={billNumber}
-//               onChange={(e) => setBillNumber(e.target.value)}
-//             />
-//           </div>
-
-//           <div className="row mb-4 fs-4">
-//             <label className="m-2 col-11 col-sm-6 col-md-6">Bill Category:</label>
-//             <select
-//               className="ms-3 col-11 col-sm-6 col-md-6"
-//               value={billCategory}
-//               onChange={(e) => setBillCategory(e.target.value)}
-//             >
-//               <option value="">Select Bill Category</option>
-//               {category.map((category) => (
-//                 <option key={category} value={category}>
-//                   {category}
-//                 </option>
-//               ))}
-//             </select>
-//           </div>
-
-//           <div className="row mb-4 fs-4">
-//             <label className="m-2 col-11 col-sm-6 col-md-6">Firm Name:</label>
-//             <input
-//               className="ms-3 col-11 col-sm-6 col-md-6"
-//               type="text"
-//               value={firmName}
-//               onChange={(e) => setFirmName(e.target.value)}
-//             />
-//           </div>
-
-//           <div className="row mb-4 fs-4">
-//             <label className="m-2 col-11 col-sm-6 col-md-6">Date:</label>
-//             <input
-//               className="ms-3 col-11 col-sm-6 col-md-6"
-//               type="date"
-//               value={date}
-//               onChange={(e) => setDate(e.target.value)}
-//             />
-//           </div>
-
-//           <div className="row mb-4 fs-4">
-//             <label className="m-2 col-11 col-sm-6 col-md-6">Bill Amount:</label>
-//             <input
-//               className="ms-3 col-11 col-sm-6 col-md-6"
-//               type="text"
-//               value={billAmount}
-//               onChange={(e) => setBillAmount(e.target.value)}
-//             />
-//           </div>
-//           <div className="">
-//             <label className="m-2">Upload Bill:</label>
-//             {imgPerc && "Uploading: " + imgPerc + "%"}
-//             <input
-//               className="m-4 me-0 w-75"
-//               type="file"
-//               accept="image/*, image/jpg, image/png"
-//               onChange={handleFileChange}
-//               capture="environment" // Add capture attribute to open camera on mobile
-//             />
-//           </div>
-//           <button className="buttn px-3" type="submit" disabled={isSubmitting}>
-//             {showSpinner ? ( // Show spinner when submitting
-//               <div className="spinner-border text-primary" role="status">
-//                 <span className="visually-hidden">Loading...</span>
-//               </div>
-//             ) : (
-//               isSubmitting ? "Submitting..." : "Submit"
-//             )}
-//           </button>
-//         </form>
-//       </div>
-//       <ToastContainer />
-//     </div>
-//   );
-// }
-
-// export default Upload;
-
-
-
-
 function Upload() {
   const [billFile, setBillFile] = useState(null);
   const [name, setName] = useState("");
@@ -299,6 +50,17 @@ function Upload() {
 
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 576);
+
+  const inputRefs = {
+    name: useRef(null),
+    billType: useRef(null),
+    GstNumber: useRef(null),
+    billNumber: useRef(null),
+    billCategory: useRef(null),
+    firmName: useRef(null),
+    date: useRef(null),
+    billAmount: useRef(null),
+  };
 
   useEffect(() => {
       const handleResize = () => {
@@ -398,8 +160,19 @@ function Upload() {
     if (!billAmount) newErrors.billAmount = "Please enter Bill Amount";
     if (!imgLink) newErrors.imgLink = "Please upload a bill image";
   
+    // if (Object.keys(newErrors).length > 0) {
+    //   setErrors(newErrors);
+    //   return;
+    // }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+  
+      // Focus the first input field with an error
+      const firstErrorKey = Object.keys(newErrors)[0];
+      if (inputRefs[firstErrorKey] && inputRefs[firstErrorKey].current) {
+        inputRefs[firstErrorKey].current.focus();
+      }
       return;
     }
 
@@ -408,21 +181,6 @@ function Upload() {
       setErrorMessage("Please enter a valid amount (numbers only)");
       return;
     }
-
-    // if (!name || !billNumber || !billCategory || !billAmount || !billType || (billType == 'GST' ? !GstNumber : false) || !firmName || !date) {
-    //   setErrorMessage("All fields are required");
-    //   return;
-    // }
-
-    // if (!category.includes(billCategory)) {
-    //   setErrorMessage("Invalid bill category");
-    //   return;
-    // }
-
-    // if (!imgLink) {
-    //   setErrorMessage("Please upload a bill image");
-    //   return;
-    // }
 
     try {
       setShowSpinner(true);
@@ -515,6 +273,7 @@ function Upload() {
                 <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Name:</label>
                 <input
                   className="ms-2 col-11 col-sm-6 col-md-7"
+                  ref={inputRefs.name}
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -527,6 +286,7 @@ function Upload() {
                 <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Bill Type:</label>
                 <select
                   className="ms-2 col-11 col-sm-6 col-md-7"
+                  ref={inputRefs.billType}
                   value={billType}
                   onChange={(e) => setBillType(e.target.value)}
                 >
@@ -545,6 +305,7 @@ function Upload() {
                   <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Gst No:</label>
                   <input
                     className="ms-2 col-11 col-sm-6 col-md-7"
+                    ref={inputRefs.GstNumber}
                     type="text"
                     value={GstNumber}
                     onChange={(e) => setGstNumber(e.target.value)}
@@ -558,6 +319,7 @@ function Upload() {
                   <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Bill Number:</label>
                   <input
                     className="ms-2 col-11 col-sm-6 col-md-7"
+                    ref={inputRefs.billNumber}
                     type="text"
                     value={billNumber}
                     onChange={(e) => setBillNumber(e.target.value)}
@@ -570,6 +332,7 @@ function Upload() {
                 <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Bill Category:</label>
                 <select
                   className="ms-2 col-11 col-sm-6 col-md-7"
+                  ref={inputRefs.billCategory}
                   value={billCategory}
                   onChange={(e) => setBillCategory(e.target.value)}
                 >
@@ -587,6 +350,7 @@ function Upload() {
                 <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Firm Name:</label>
                 <input
                   className="ms-2 col-11 col-sm-6 col-md-7"
+                  ref={inputRefs.firmName}
                   type="text"
                   value={firmName}
                   onChange={(e) => setFirmName(e.target.value)}
@@ -598,6 +362,7 @@ function Upload() {
                 <label className="m-2 me-4 col-11 col-sm-6 col-md-7">Date of purchase:</label>
                 <input
                   className="ms-2 col-11 col-sm-6 col-md-7"
+                  ref={inputRefs.date}
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
@@ -609,9 +374,10 @@ function Upload() {
                 <label className="m-2 me-4  col-11 col-sm-6 col-md-7">Bill Amount:</label>
                 <input
                   className="ms-2 col-11 col-sm-6 col-md-7"
-                  type="text"
+                  ref={inputRefs.billAmount}
+                  type="number"
                   value={billAmount}
-                  onChange={(e) => setBillAmount(e.target.value)}
+                  onChange={(e) => setBillAmount(e.target.value.toString())}
                 />
                 {errors.billAmount && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.billAmount}</p>}
               </div>
@@ -632,6 +398,7 @@ function Upload() {
                 >
                   <input
                     type="file"
+                    
                     ref={fileInputRef}
                     onChange={handleFileSelect}
                     className="d-none ms-2 col-11 col-sm-6 col-md-7 "

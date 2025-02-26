@@ -210,8 +210,8 @@ function UserTable() {
               <th className={`${styles.tableHeaderCell} text-nowrap`}>Date of purchase</th>
               <th className={`${styles.tableHeaderCell} text-nowrap`}>Amount</th>
               <th className={`${styles.tableHeaderCell} text-nowrap`}>Uploaded By</th>
-              <th className={`${styles.tableHeaderCell} text-nowrap`}>Image</th>
               <th className={`${styles.tableHeaderCell} text-nowrap`}>Status</th>
+              <th className={`${styles.tableHeaderCell} text-nowrap`}>Image</th>
             </tr>
           </thead>
           <tbody>

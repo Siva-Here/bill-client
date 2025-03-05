@@ -133,11 +133,12 @@ function Upload() {
   }, [billFile]);
 
   const billTypes = ["GST", "Non GST"];
-  const category = ["printing", "marketing", "travelling", "outside promotions", "stage photography"];
+  const category = ["printing", "marketing", "travelling", "outside promotions", "stage photography","InfraStructure"];
 
   const handleFileChange = (e) => {
     // const file1 = e.target.files[0];
     setBillFile(file);
+    setErrors((prevErrors) => ({ ...prevErrors, imgLink: "" }));
   };
 
   const handleFileCancel = (e) => {
@@ -158,12 +159,9 @@ function Upload() {
     if (!firmName) newErrors.firmName = "Please enter Firm Name";
     if (!date) newErrors.date = "Please enter Date of Purchase";
     if (!billAmount) newErrors.billAmount = "Please enter Bill Amount";
-    if (!imgLink) newErrors.imgLink = "Please upload a bill image";
+    if (!billFile) newErrors.imgLink = "Please upload a bill image";
   
-    // if (Object.keys(newErrors).length > 0) {
-    //   setErrors(newErrors);
-    //   return;
-    // }
+
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -201,7 +199,7 @@ function Upload() {
 
       const token = localStorage.getItem("jwtToken");
       const response = await axios.post(
-        "https://bill-server-hiq9.onrender.com/user/upload",
+        "http://bill-server-hiq9.onrender.com/user/upload",
         formData,
         {
           headers: {
@@ -235,6 +233,40 @@ function Upload() {
       setIsSubmitting(false);
     }
   };
+
+  const handleInputChange = (field, value) => {
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: undefined }));
+    
+    switch (field) {
+      case "name":
+        setName(value);
+        break;
+      case "billType":
+        setBillType(value);
+        break;
+      case "GstNumber":
+        setGstNumber(value);
+        break;
+      case "billNumber":
+        setBillNumber(value);
+        break;
+      case "billCategory":
+        setBillCategory(value);
+        break;
+      case "firmName":
+        setFirmName(value);
+        break;
+      case "date":
+        setDate(value);
+        break;
+      case "billAmount":
+        setBillAmount(value);
+        break;
+      default:
+        break;
+    }
+  };
+  
 
   return (
     <div className="container px-md-5">
@@ -276,7 +308,7 @@ function Upload() {
                   ref={inputRefs.name}
                   type="text"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
                   
                 />
                  {errors.name && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.name}</p>}
@@ -288,7 +320,7 @@ function Upload() {
                   className="ms-2 col-11 col-sm-6 col-md-7"
                   ref={inputRefs.billType}
                   value={billType}
-                  onChange={(e) => setBillType(e.target.value)}
+                  onChange={(e) => handleInputChange("billType", e.target.value)}
                 >
                   <option value="" className="fs-6">Select Bill Type</option>
                   {billTypes.map((type) => (
@@ -308,7 +340,7 @@ function Upload() {
                     ref={inputRefs.GstNumber}
                     type="text"
                     value={GstNumber}
-                    onChange={(e) => setGstNumber(e.target.value)}
+                    onChange={(e) => handleInputChange("GstNumber", e.target.value)}
                   />
                   {errors.GstNumber && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.GstNumber}</p>}
                 </div>
@@ -322,7 +354,7 @@ function Upload() {
                     ref={inputRefs.billNumber}
                     type="text"
                     value={billNumber}
-                    onChange={(e) => setBillNumber(e.target.value)}
+                    onChange={(e) => handleInputChange("billNumber", e.target.value)}
                   />
                   {errors.billNumber && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.billNumber}</p>}
                 </div>
@@ -334,7 +366,7 @@ function Upload() {
                   className="ms-2 col-11 col-sm-6 col-md-7"
                   ref={inputRefs.billCategory}
                   value={billCategory}
-                  onChange={(e) => setBillCategory(e.target.value)}
+                  onChange={(e) => handleInputChange("billCategory", e.target.value)}
                 >
                   <option value="" className="fs-5">Select Bill Category</option>
                   {category.map((category) => (
@@ -353,7 +385,7 @@ function Upload() {
                   ref={inputRefs.firmName}
                   type="text"
                   value={firmName}
-                  onChange={(e) => setFirmName(e.target.value)}
+                  onChange={(e) => handleInputChange("firmName", e.target.value)}
                 />
                  {errors.firmName && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.firmName}</p>}
               </div>
@@ -365,7 +397,7 @@ function Upload() {
                   ref={inputRefs.date}
                   type="date"
                   value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  onChange={(e) => handleInputChange("date", e.target.value)}
                 />
                 {errors.date && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.date}</p>}
               </div>
@@ -377,7 +409,7 @@ function Upload() {
                   ref={inputRefs.billAmount}
                   type="number"
                   value={billAmount}
-                  onChange={(e) => setBillAmount(e.target.value.toString())}
+                  onChange={(e) => handleInputChange("billAmount", e.target.value)}
                 />
                 {errors.billAmount && <p className="smallfont text-danger fs-md-4 col-md-7 col-11 mt-1">{errors.billAmount}</p>}
               </div>
@@ -401,6 +433,7 @@ function Upload() {
                     
                     ref={fileInputRef}
                     onChange={handleFileSelect}
+                    capture="environment"
                     className="d-none ms-2 col-11 col-sm-6 col-md-7 "
                     accept="image/*"
                   />
@@ -439,6 +472,7 @@ function Upload() {
                     </button>
                     <button
                       className="btn btn-primary"
+                      type="button"
                       onClick={handleFileChange}
                     >
                       {isUploading ? 'Saving...' : 'Save image'}

@@ -433,9 +433,9 @@ function Upload() {
                     
                     ref={fileInputRef}
                     onChange={handleFileSelect}
-                    capture="environment"
                     className="d-none ms-2 col-11 col-sm-6 col-md-7 "
                     accept="image/*"
+                    capture
                   />
                   
 

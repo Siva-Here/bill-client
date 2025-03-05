@@ -435,7 +435,7 @@ function Upload() {
                     onChange={handleFileSelect}
                     className="d-none ms-2 col-11 col-sm-6 col-md-7 "
                     accept="image/*"
-                    capture
+                    
                   />
                   
 

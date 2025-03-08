@@ -199,7 +199,7 @@ function Upload() {
 
       const token = localStorage.getItem("jwtToken");
       const response = await axios.post(
-        "http://bill-server-hiq9.onrender.com/user/upload",
+        "https://bill-server-hiq9.onrender.com/user/upload",
         formData,
         {
           headers: {
